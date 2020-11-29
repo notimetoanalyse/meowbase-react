@@ -1,0 +1,481 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+@import url('https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css');
+
+:root {
+  --modal-duration: 1s;
+  --primary-color: #00d1b2;
+  --success-color: #3dc46e;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  color: #4a4a4a;
+  overflow-x: hidden;
+}
+
+.page_container {
+  width: 100%;
+  margin: auto;
+}
+
+aside {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  margin: 0;
+  padding: 30px 20px 0 20px;
+  display: flex;
+  min-width: 180px;
+  flex-direction: column;
+  height: 80vh;
+  flex: 1 1 250px;
+}
+
+.logo_wrapper {
+  width: 210px;
+}
+
+.logo_wrapper img {
+  width: 100%;
+}
+
+.main_content_flex_wrapper {
+  display: flex;
+}
+
+.non_sidebar_content {
+  width: 100%;
+  max-width: 950px;
+  padding: 0 10px;
+}
+
+.top_panel {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.dropdown-user-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.menu-list li.is-active a {
+  background-color: var(--primary-color);
+}
+
+.menu-list li.is-active a {
+  color: #fff;
+}
+
+.menu-list li.is-active a:hover {
+  background-color: #34c1ac;
+}
+
+.width_wrapper {
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+.main_section {
+  padding: 0 0 20px 20px !important;
+  width: 100% !important;
+  border-left: 1px solid #979797;
+  flex: 3;
+}
+
+.wrapper-title-and-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  margin-bottom: 10px;
+}
+
+.button-wrapper {
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.card {
+  margin: 0 0 20px 0 !important;
+}
+
+.button {
+  cursor: pointer;
+  outline: none;
+}
+
+.button:hover {
+  outline: none;
+  opacity: 0.7;
+}
+
+#add-btn {
+  display: none;
+}
+
+#add-btn.show {
+  display: block;
+  background-color: #00d1b2;
+  /* flex-basis: 50px; */
+  color: #f5f5f5;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  padding: 9px 24px 9px 24px;
+  border: none;
+  margin-right: 10px;
+}
+
+.card {
+  cursor: pointer;
+}
+
+.card:hover {
+  box-shadow: 2px 2px 3px 2px rgba(0, 0, 0, 0.2);
+}
+
+.patient-container {
+  /* border: 1px solid #dfdfdf; */
+  border-radius: 5px;
+  width: 100%;
+  display: flex;
+  /* padding: 10px; */
+  cursor: pointer;
+  /* padding: 10px 10px 15px 10px; */
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.patient-container:hover {
+  background: #f3f3f3;
+}
+
+.patient-info-container {
+  padding-left: 15px;
+}
+
+.patient-img-container {
+  padding: auto 10px;
+}
+
+.image #patient-photo-main-page {
+  border-radius: 50%;
+  height: 80px;
+  width: 80px;
+  object-fit: cover;
+}
+
+.patient .patient-info {
+  font-family: 'Roboto', sans-serif;
+  font-weight: semibold;
+  color: #4a4a4a;
+  font-size: 16px;
+}
+
+.tag {
+  margin: auto 7px;
+  font-weight: 500;
+}
+
+.tag:hover {
+  opacity: 0.9;
+  box-shadow: 1px 1px 1px 1px teal;
+}
+
+/* Modal Window */
+
+#submit-patient-btn {
+  margin-right: 10px;
+}
+
+input[type='text'] {
+  width: 100%;
+  max-width: 100%;
+  overflow-y: scroll;
+  font-family: 'Roboto', sans-serif;
+  margin: 5px auto 15px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  padding: 0 0 0 8px;
+}
+
+textarea#observations {
+  width: 100%;
+  max-width: 100%;
+  overflow-y: scroll;
+  font-family: 'Roboto', sans-serif;
+  margin: 5px auto 15px;
+  padding: 7px 0 0 8px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}
+
+input[type='text']:focus,
+input[type='text']:active {
+  outline: 0;
+  border: 2px solid #ccc;
+}
+
+input[type='file'] {
+  border-radius: 50%;
+  border: 1px solid #d8d8d8;
+  width: 90px;
+  height: 90px;
+  cursor: pointer;
+  outline: none;
+  cursor: pointer;
+  z-index: 20;
+  position: relative;
+}
+
+.patient-img-upload-container {
+  cursor: pointer;
+  position: relative;
+}
+
+span#plus-sign {
+  position: absolute;
+  max-height: 20px;
+  top: 18px;
+  left: 35px;
+  font-size: 40px;
+  font-family: 'Times New Roman', sans-serif;
+  font-weight: light;
+  color: #979797;
+  cursor: pointer;
+}
+
+#patient-img-upload::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.submit-btn-container {
+  background: #f5f5f5;
+  margin: 0;
+  padding: 20px 25px;
+}
+
+#submit-patient-btn {
+  background: var(--success-color);
+}
+
+.cancel-btn {
+  background: #fff;
+  border: 1px solid lightgrey;
+  color: #313332;
+}
+
+#patient-img-uploaded {
+  position: absolute;
+  top: 2px;
+  left: -1px;
+  width: 90px;
+  max-width: 90px;
+  height: 90px;
+  border-radius: 20px 50px;
+  padding: 0 5px 2px 1px;
+}
+
+#patient-img-uploaded img {
+  width: 90px;
+  max-width: 90px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+#upload-text {
+  display: block;
+}
+
+#progress-container {
+  margin-top: 10px;
+}
+
+.progress.show {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 30%;
+  border-radius: 5px;
+}
+
+.progress {
+  visibility: hidden;
+}
+
+progress::-webkit-progress-value {
+  visibility: hidden;
+  background: var(--primary-color);
+  border-radius: 5px;
+}
+
+progress::-webkit-progress-bar {
+  background: lightgrey;
+  visibility: hidden;
+  border-radius: 5px;
+}
+
+progress.show::-webkit-progress-bar {
+  background: lightgrey;
+  visibility: visible;
+  border-radius: 5px;
+}
+
+progress.show::-webkit-progress-value {
+  visibility: visible;
+  background: var(--primary-color);
+  border-radius: 5px;
+}
+
+#upload-photo-text {
+  visibility: hidden;
+}
+
+#upload-photo-text.show {
+  visibility: visible;
+}
+
+.empty-input {
+  display: none;
+}
+
+.empty-input.show {
+  display: block;
+  font-size: 11px;
+  color: red;
+  margin-top: -7px;
+  margin-bottom: 5px;
+}
+
+.tags-container tags.tagify {
+  width: 100%;
+  max-width: 100%;
+  overflow-y: scroll;
+  font-family: 'Roboto', sans-serif;
+  margin: 5px auto;
+  padding: 0 2px 0 2px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}
+
+.tags-container {
+  width: 100%;
+}
+
+/* Patient individual page styles */
+.box {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow-y: auto;
+}
+
+.patient-page-info-wrapper label {
+  display: block;
+  margin-bottom: 5px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #02211c;
+}
+
+.patient-page-wrapper .patient-img-container {
+  border-radius: 50%;
+}
+
+#patient-img-uploaded-personal-page {
+  position: relative;
+  width: 89px;
+  max-width: 89px;
+  height: 89px;
+  max-height: 89px;
+  border-radius: 20px 50px;
+  padding: 0 5px 2px 1px;
+  top: 73px;
+  right: 90px;
+  bottom: 17px;
+}
+
+.patient-page-img-container {
+  margin: -50px 0 20px 10px;
+}
+
+#patient-img-uploaded-personal-page img {
+  width: 89px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+#patient-img-upload-personal-page::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.buttons-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 15px;
+}
+
+.patient-page-wrapper .form-input {
+  padding: 5px 0 5px 5px;
+  width: 100%;
+  outline: none;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+input#personal-page-name-input::placeholder,
+input#personal-page-name-input,
+input#patient-page-input-tags {
+  font-size: 15px;
+}
+
+textarea#personal-page-observations-input {
+  height: 90px;
+  width: 100%;
+  max-width: 100%;
+  overflow: auto;
+}
+
+textarea#personal-page-observations-input::placeholder {
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+  color: black;
+}
+
+textarea#personal-page-observations-input {
+  font-size: 15px;
+  font-family: 'SF Text', sans-serif;
+  color: black;
+}
+
+.patient-page-info-wrapper tags.tagify {
+  margin: 15px auto;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .main_section {
+    border: none !important;
+    padding: 0 !important;
+  }
+}
