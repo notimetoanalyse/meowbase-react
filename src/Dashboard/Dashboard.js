@@ -2,12 +2,19 @@ import React from 'react';
 import Sidebar from '../Sidebar/Sidebar.js';
 import Patients from '../Patients/Patients.js';
 import TopPanel from '../TopPanel/TopPanel';
-import { Route, Switch } from 'react-router';
+import { Route, Switch, Redirect } from 'react-router';
+import { useAuth } from '../context/AuthContext';
 import '../App.css';
 import PatientPage from '../PatientPage/PatientPage';
 import Settings from '../components/Settings/Settings';
 
-const Main = () => {
+const Dashboard = () => {
+  const { currentUser } = useAuth();
+
+  if (!currentUser) {
+    return <Redirect to="/login" />;
+  }
+
   return (
     <>
       <div className="page_container">
@@ -17,9 +24,9 @@ const Main = () => {
             <TopPanel />
             <div class="main_section" id="main-section">
               <Switch>
-                <Route exact path="/patient/:id" component={PatientPage} />
-                <Route exact path="/settings" component={Settings} />
                 <Route exact path="/" component={Patients} />
+                <Route path="/patient/:id" component={PatientPage} />
+                <Route exact path="/settings" component={Settings} />
               </Switch>
             </div>
           </div>
@@ -29,4 +36,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default Dashboard;

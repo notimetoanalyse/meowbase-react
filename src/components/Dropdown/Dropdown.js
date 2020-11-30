@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import caticon from '../../assets/caticon.png';
 import { IoMdSettings, FiLogOut } from 'react-icons/all';
 import { NavLink } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const dropdownMenuItemStyling = {
   display: 'flex',
@@ -9,9 +11,25 @@ const dropdownMenuItemStyling = {
 };
 
 const Dropdown = props => {
+  const [error, setError] = useState('');
+  const { logOut } = useAuth();
+  const history = useHistory();
   const [isOpened, setDropdownState] = useState(false);
 
   const toggleDropdownState = () => setDropdownState(prevState => !prevState);
+
+  async function handleLogout() {
+    setError('');
+
+    try {
+      await logOut();
+      history.push('/login');
+    } catch {
+      setError('Failed to log out');
+      alert(error);
+    }
+  }
+
   return (
     <div
       className={isOpened ? 'dropdown is-active is-right' : 'dropdown is-right'}
@@ -37,7 +55,11 @@ const Dropdown = props => {
               <IoMdSettings /> &nbsp; Settings
             </a>
           </NavLink>
-          <a className="dropdown-item" style={dropdownMenuItemStyling}>
+          <a
+            className="dropdown-item"
+            style={dropdownMenuItemStyling}
+            onClick={handleLogout}
+          >
             <FiLogOut />
             &nbsp; Log out
           </a>
