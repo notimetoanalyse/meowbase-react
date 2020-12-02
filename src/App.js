@@ -5,8 +5,7 @@ import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
 import Dashboard from './Dashboard/Dashboard';
 import AuthProvider from './context/AuthContext';
-import PatientPage from './PatientPage/PatientPage';
-import reducer, { initialState } from './reducer';
+import ForgotPassword from './components/ForgotPassword/ForgotPassword';
 import { db } from './firebase';
 import { usePatientsContext } from './context/PatientsContext';
 
@@ -70,6 +69,7 @@ function App() {
       <AuthProvider>
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
+        <Route path="/forgot-password" component={ForgotPassword} />
         <Route path="/" component={Dashboard} />
       </AuthProvider>
     </Switch>

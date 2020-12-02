@@ -19,6 +19,16 @@ body {
   overflow-x: hidden;
 }
 
+.burger_container {
+  display: none;
+}
+
+.burger_container img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
 .page_container {
   width: 100%;
   margin: auto;
@@ -55,7 +65,7 @@ aside {
 .non_sidebar_content {
   width: 100%;
   max-width: 950px;
-  padding: 0 10px;
+  padding: 0 15px;
 }
 
 .top_panel {
@@ -84,15 +94,7 @@ aside {
 }
 
 .menu-list li.is-active a {
-  background-color: var(--primary-color);
-}
-
-.menu-list li.is-active a {
   color: #fff;
-}
-
-.menu-list li.is-active a:hover {
-  background-color: #34c1ac;
 }
 
 .width_wrapper {
@@ -101,7 +103,7 @@ aside {
 }
 
 .main_section {
-  padding: 0 0 20px 20px !important;
+  padding: 0 0 20px 20px;
   width: 100% !important;
   border-left: 1px solid #979797;
   flex: 3;
@@ -160,13 +162,10 @@ aside {
 }
 
 .patient-container {
-  /* border: 1px solid #dfdfdf; */
   border-radius: 5px;
   width: 100%;
   display: flex;
-  /* padding: 10px; */
   cursor: pointer;
-  /* padding: 10px 10px 15px 10px; */
   margin-bottom: 20px;
   cursor: pointer;
 }
@@ -437,10 +436,14 @@ progress.show::-webkit-progress-value {
 }
 
 .buttons-container {
-  margin-top: 10px;
+  margin-top: 15px;
   display: flex;
   justify-content: flex-start;
-  gap: 15px;
+  gap: 20px;
+}
+
+.buttons-container .button {
+  padding-left: 1em;
 }
 
 .patient-page-wrapper .form-input {
@@ -481,12 +484,25 @@ textarea#personal-page-observations-input {
 }
 
 @media (max-width: 768px) {
+  .top_panel {
+    justify-content: space-between;
+  }
+
   .sidebar {
     display: none;
   }
 
   .main_section {
-    border: none !important;
-    padding: 0 !important;
+    border: none;
+    padding: 0;
+  }
+
+  .burger_container {
+    display: block;
+  }
+
+  .burger_container:hover {
+    opacity: 0.8;
+    cursor: pointer;
   }
 }

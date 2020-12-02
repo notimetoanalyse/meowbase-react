@@ -1,11 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../assets/logo.svg';
+import icon from '../assets/burger.png';
 import Dropdown from '../components/Dropdown/Dropdown';
 
 export default function TopPanel() {
   return (
     <header className="top_panel">
+      <div className="burger_container">
+        <img src={icon} alt="Menu" />
+      </div>
       <Dropdown />
     </header>
   );

@@ -1,5 +1,6 @@
 export const initialState = {
   patients: [],
+  error: '',
 };
 
 const reducer = (state, action) => {
@@ -11,6 +12,7 @@ const reducer = (state, action) => {
         ...state,
         patients: action.patients,
       };
+
     default:
       return state;
   }

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import logo from '../assets/logo.svg';
-import '../App.css';
 
 const Sidebar = () => {
   return (
@@ -14,13 +13,26 @@ const Sidebar = () => {
         </Link>
         <p className="menu-label">Data</p>
         <ul className="menu-list">
-          <li id="nav-patients" className="is-active" key="1">
-            <Link to="/">Patients</Link>
+          <li id="nav-patients" key="1">
+            <NavLink
+              activeClassName="is-active"
+              exact
+              className="menu-item"
+              to="/"
+            >
+              Patients
+            </NavLink>
           </li>
           <li id="nav-tags">
-            <Link to="/settings" key="2">
+            <NavLink
+              exact
+              to="/settings"
+              activeClassName="is-active"
+              className="menu-item"
+              key="2"
+            >
               Settings
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </div>
