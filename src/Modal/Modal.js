@@ -1,11 +1,21 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useRef } from 'react';
 import TextInput from '../components/TextInput.js';
 import SuccessButton from '../components/Buttons/SuccessButton';
 import CancelButton from '../components/Buttons/CancelButton';
+import Loader from '../components/Loader/Loader'
+import { addPatient } from '../redux/actions';
+import { useSelector, useDispatch } from 'react-redux';
 import '.././App.css';
 
 const Modal = props => {
-  function handleFileSelect(e, output) {
+  const error = useSelector(state => state.error)
+  const dispatch = useDispatch();
+  let imageRef = useRef();
+  let nameRef = useRef();
+  let observationsRef = useRef();
+  const loading = useSelector(state => state.loading)
+
+  function handleFileSelect(e) {
     const outputEl = document.querySelector('#patient-img-uploaded');
     const file = e.target.files[0];
     let reader = new FileReader();
@@ -23,6 +33,19 @@ const Modal = props => {
     reader.readAsDataURL(file);
   }
 
+  const handleAddPatient = (e) => {
+    console.log('here')
+    e.preventDefault();
+    const patient = {
+      name: nameRef.current.value,
+      observations: observationsRef.current.value,
+      // will need refactoring
+      // image: imageRef.current.value,
+      status: 'visible'
+    }
+    dispatch(addPatient(patient))
+  }
+
   return (
     <Fragment>
       <div>
@@ -37,14 +60,18 @@ const Modal = props => {
                 onClick={props.closeModal}
               ></button>
             </div>
-            <div className="modal-card-body">
-              <div>
-                <form>
+            <form onSubmit={(e) => handleAddPatient(e)}>
+              <div className="modal-card-body">
+                {error.length > 0 && <div className='notification is-danger'>{error}</div>}
+                {loading && <Loader />}
+                <div>
                   <div className="patient-img-upload-container">
                     <input
                       type="file"
                       id="patient-img-upload"
                       placeholder="Add Image"
+                      required
+                      ref={imageRef}
                       onChange={e => handleFileSelect(e)}
                     />
                     <span id="plus-sign">+</span>
@@ -64,10 +91,13 @@ const Modal = props => {
                   <div id="empty-msg-image" className="empty-input">
                     Image can't be blank
                   </div>
-                  <TextInput
-                    labelClassName="modal-label"
-                    label="Name"
+                  <label htmlFor='name' className='modal-label'>Name</label>
+                  <input
+                    className="form-input input"
+                    type="text"
                     id="name"
+                    required
+                    ref={nameRef}
                     placeholder="Name"
                   />
                   <div id="empty-msg-name" className="empty-input">
@@ -80,6 +110,8 @@ const Modal = props => {
                     name="observations"
                     id="observations"
                     placeholder="Observations"
+                    required
+                    ref={observationsRef}
                     className="form-input textarea"
                     cols="30"
                     rows="5"
@@ -87,30 +119,23 @@ const Modal = props => {
                   <div id="empty-msg-observations" className="empty-input">
                     Observations field can't be empty or less than 2 characters
                   </div>
-                  <div className="tags-container">
-                    <TextInput
-                      label="Tags"
-                      id="input-tags"
-                      labelClassName="modal-label"
-                    />
-                  </div>
-                </form>
+                </div>
               </div>
-            </div>
-            <div className="modal-card-foot">
-              <div>
-                <SuccessButton
-                  id="submit-patient-btn"
-                  value="submit"
-                  title="Submit patient"
-                />
-                <CancelButton
-                  id="cancel-btn"
-                  title="Cancel"
-                  clicked={props.closeModal}
-                />
+              <div className="modal-card-foot">
+                <div>
+                  <button
+                    id="submit-patient-btn"
+                    value='submit'
+                    className='button is-primary'
+                  >Submit</button>
+                  <CancelButton
+                    id="cancel-btn"
+                    title="Cancel"
+                    clicked={props.closeModal}
+                  />
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>

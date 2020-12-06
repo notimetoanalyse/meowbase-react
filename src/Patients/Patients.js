@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { usePatientsContext } from '../context/PatientsContext';
+import React, { useState } from 'react';
 import SuccessButton from '../components/Buttons/SuccessButton';
 import PatientCard from './PatientCard';
-import { db } from '../firebase';
+import { useDispatch, useSelector } from 'react-redux';
 import Modal from '../Modal/Modal';
 import Loader from '../components/Loader/Loader';
 
 const Patients = () => {
-  const [{ patients }, dispatch] = usePatientsContext();
+  const patients = useSelector(state => state.patients);
+  const loading = useSelector(state => state.loading);
+  const error = useSelector(state => state.error)
   const [isModalOpened, setModalState] = useState(false);
+  const dispatch = useDispatch();
 
   const closeModal = () => {
     setModalState(false);
@@ -38,21 +40,20 @@ const Patients = () => {
             <PatientCard
               patient={patient}
               key={patient.id}
-              // clicked={setSelectedPatient(patient)}
+            // clicked={setSelectedPatient(patient)}
             />
           ))}
         </div>
       </div>
       {isModalOpened ? (
         <Modal
-          // style={{ display: isModalOpened ? 'block' : 'none' }}
           closeModal={closeModal}
         />
       ) : null}
     </section>
   ) : (
-    <Loader />
-  );
+      <Loader />
+    );
 
   return <div>{patientsLayout}</div>;
 };
