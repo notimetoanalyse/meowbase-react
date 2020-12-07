@@ -1,4 +1,4 @@
-import { FETCH_PATIENTS_SUCCESS, FETCH_PATIENTS, SET_ERROR, SHOW_LOADER, HIDE_LOADER, FETCH_PATIENTS_FAILED, UPDATE_PATIENT_FAILED, UPDATE_PATIENT_SUCCESS, DELETE_PATIENT, DELETE_PATIENT_SUCCESS, DELETE_PATIENT_FAILED, ADD_PATIENT_SUCCESS, ADD_PATIENT_FAILED, ADD_PATIENT } from './actionTypes'
+import { FETCH_PATIENTS, SET_PATIENTS_ERROR, SHOW_LOADER, HIDE_LOADER, DELETE_PATIENT, ADD_PATIENT, UPDATE_PATIENT } from './actionTypes'
 import { parsePatientFromSnapshot } from './utils'
 import { db } from '../firebase';
 
@@ -10,10 +10,9 @@ export const hideLoader = () => {
 	return { type: HIDE_LOADER }
 }
 
-export const setError = (error) => {
-	return { type: SET_ERROR, payload: error }
+export const setPatientsError = (error) => {
+	return { type: SET_PATIENTS_ERROR, payload: error }
 }
-
 
 export const updatePatient = (id, patient) => {
 	return async dispatch => {
@@ -21,22 +20,12 @@ export const updatePatient = (id, patient) => {
 			dispatch(showLoader())
 			await db.collection('patients').doc(id).update(patient)
 			dispatch(hideLoader())
-			dispatch(updatePatientSuccess(patient))
-			dispatch(fetchPatients())
-
+			dispatch({ type: UPDATE_PATIENT, payload: patient })
 		} catch (err) {
 			dispatch(hideLoader())
-			dispatch(updatePatientFailed(err))
+			dispatch(setPatientsError(err))
 		}
 	}
-}
-
-export const updatePatientSuccess = (patient) => {
-	return { type: UPDATE_PATIENT_SUCCESS, payload: patient }
-}
-
-export const updatePatientFailed = (err) => {
-	return { type: SET_ERROR, payload: err }
 }
 
 export const deletePatient = (id) => {
@@ -47,20 +36,12 @@ export const deletePatient = (id) => {
 				status: 'invisible',
 			});
 			dispatch(hideLoader())
-			dispatch(fetchPatients())
+			dispatch({ type: DELETE_PATIENT, payload: id })
 		} catch (err) {
 			dispatch(hideLoader())
-			dispatch(deletePatientFailed())
+			dispatch(setPatientsError(err.toString()))
 		}
 	}
-}
-
-export const deletePatientSuccess = (patientId) => {
-	return { type: deletePatient, payload: patientId }
-}
-
-export const deletePatientFailed = (err) => {
-	return { type: DELETE_PATIENT_FAILED, payload: err }
 }
 
 export const fetchPatients = () => {
@@ -72,21 +53,13 @@ export const fetchPatients = () => {
 				parsePatientFromSnapshot(patientSnapshot)
 			);
 			const filteredPatients = allPatients.filter(patient => patient !== null);
-			dispatch(fetchPatientsSuccess(filteredPatients))
+			dispatch({ type: FETCH_PATIENTS, payload: filteredPatients });
 			dispatch(hideLoader())
 		} catch (err) {
 			dispatch(hideLoader())
-			dispatch(fetchPatientsFailed(err.toString()))
+			dispatch(setPatientsError(err.toString()))
 		}
 	}
-}
-
-export const fetchPatientsSuccess = (patients) => {
-	return { type: FETCH_PATIENTS_SUCCESS, payload: patients }
-}
-
-export const fetchPatientsFailed = (error) => {
-	return { type: SET_ERROR, payload: error }
 }
 
 export const addPatient = (patient) => {
@@ -95,18 +68,10 @@ export const addPatient = (patient) => {
 			dispatch(showLoader());
 			await db.collection('patients').add(patient);
 			dispatch(hideLoader())
-			dispatch(addPatientSuccess(patient))
+			dispatch({ type: ADD_PATIENT, payload: patient })
 		} catch (err) {
 			dispatch(hideLoader())
-			dispatch(addPatientFailed(err))
+			dispatch(setPatientsError(err.toString()))
 		}
 	}
-}
-
-export const addPatientFailed = (err) => {
-	return { type: ADD_PATIENT_FAILED, payload: err }
-}
-
-export const addPatientSuccess = (patient) => {
-	return { type: ADD_PATIENT_SUCCESS, payload: patient }
 }
