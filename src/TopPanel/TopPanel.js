@@ -1,6 +1,6 @@
 import React from 'react';
 import icon from '../assets/burger.png';
-import Dropdown from '../components/Dropdown/Dropdown';
+// import Dropdown from '../components/Dropdown/Dropdown';
 
 export default function TopPanel() {
   return (
@@ -8,7 +8,7 @@ export default function TopPanel() {
       <div className="burger_container">
         <img src={icon} alt="Menu" />
       </div>
-      <Dropdown />
+      {/* <Dropdown /> */}
     </header>
   );
 }

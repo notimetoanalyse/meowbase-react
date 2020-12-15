@@ -1,4 +1,7 @@
-import { FETCH_PATIENTS, SET_PATIENTS_ERROR, SHOW_LOADER, HIDE_LOADER, DELETE_PATIENT, ADD_PATIENT, UPDATE_PATIENT } from './actionTypes'
+import {
+	FETCH_PATIENTS, SET_PATIENTS_ERROR, SHOW_LOADER, HIDE_LOADER, DELETE_PATIENT, ADD_PATIENT, UPDATE_PATIENT, SIGN_IN, HIDE_LOADER_P,
+	SIGN_OUT, SET_AUTH_ERROR, RESET_PASSWORD, UPDATE_USER_CREDS, SET_UPDATE_USER_CREDS_ERROR
+} from './actionTypes'
 import { parsePatientFromSnapshot } from './utils'
 import { db } from '../firebase';
 
@@ -7,20 +10,70 @@ export const showLoader = () => {
 }
 
 export const hideLoader = () => {
-	return { type: HIDE_LOADER }
+	return { type: HIDE_LOADER_P }
 }
 
 export const setPatientsError = (error) => {
 	return { type: SET_PATIENTS_ERROR, payload: error }
 }
 
+export const setAuthError = (err) => {
+	return ({ type: SET_AUTH_ERROR, payload: err })
+}
+
+export const logIn = (user) => {
+	return ({ type: SIGN_IN, payload: user })
+}
+
+export const logOut = () => {
+	return ({ type: SIGN_OUT })
+}
+
+export const updateUserCreds = (user) => {
+	return ({ type: UPDATE_USER_CREDS, payload: user })
+}
+
+// export const resetPassword = (email) => {
+// 	return dispatch => {
+// 		try {
+// 			auth.sendPasswordResetEmail(email);
+// 			dispatch({ type: RESET_PASSWORD })
+// 		}
+// 		catch (err) {
+// 			dispatch({ SET_AUTH_ERROR, payload: err })
+// 		}
+// 	}
+// }
+
+// export const updateEmail = (email) => {
+// 	return (dispatch, getState) => {
+// 		try {
+// 			getState().currentUser.updateEmail(email);
+// 		}
+// 		catch (err) {
+// 			dispatch({ type: SET_AUTH_ERROR, payload: err })
+// 		}
+// 	}
+// }
+
+// export const updatePassword = (pass) => {
+// 	return (dispatch, getState) => {
+// 		try {
+// 			getState().currentUser.updatePassword(pass);
+// 		}
+// 		catch (err) {
+// 			dispatch({ type: SET_AUTH_ERROR, payload: err })
+// 		}
+// 	}
+// }
+
 export const updatePatient = (id, patient) => {
 	return async dispatch => {
 		try {
 			dispatch(showLoader())
 			await db.collection('patients').doc(id).update(patient)
+			dispatch({ type: UPDATE_PATIENT, id, patient });
 			dispatch(hideLoader())
-			dispatch({ type: UPDATE_PATIENT, payload: patient })
 		} catch (err) {
 			dispatch(hideLoader())
 			dispatch(setPatientsError(err))
@@ -35,11 +88,11 @@ export const deletePatient = (id) => {
 			await db.collection('patients').doc(id).update({
 				status: 'invisible',
 			});
-			dispatch(hideLoader())
 			dispatch({ type: DELETE_PATIENT, payload: id })
+			dispatch(hideLoader())
 		} catch (err) {
 			dispatch(hideLoader())
-			dispatch(setPatientsError(err.toString()))
+			dispatch(setPatientsError(err))
 		}
 	}
 }
@@ -75,3 +128,8 @@ export const addPatient = (patient) => {
 		}
 	}
 }
+
+
+db.collection('patients').onSnapshot(function () {
+	fetchPatients();
+});

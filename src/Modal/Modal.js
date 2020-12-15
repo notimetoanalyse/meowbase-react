@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import '.././App.css';
 
 const Modal = props => {
-  const error = useSelector(state => state.error)
+  const error = useSelector(state => state.patients.error)
   const dispatch = useDispatch();
   let imageRef = useRef();
   let nameRef = useRef();

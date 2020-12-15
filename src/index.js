@@ -8,23 +8,20 @@ import { createStore, compose, applyMiddleware } from 'redux'
 import * as serviceWorker from './serviceWorker';
 import { rootReducer } from './redux/rootReducer'
 import { BrowserRouter } from 'react-router-dom';
-// import reducer, { initialState } from './reducer';
-// import { PatientsProvider } from './context/PatientsContext';
 
 const store = createStore(rootReducer, compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
 
 const app = (
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>
 )
 
-
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      {app}
-    </BrowserRouter>
+    {app}
   </React.StrictMode>,
   document.getElementById('root')
 );

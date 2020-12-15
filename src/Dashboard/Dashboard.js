@@ -1,18 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Sidebar from '../Sidebar/Sidebar.js';
 import Patients from '../Patients/Patients.js';
 import TopPanel from '../TopPanel/TopPanel';
 import { Route, Switch, Redirect } from 'react-router';
-import { useAuth } from '../context/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
 import '../App.css';
+import { fetchPatients, logOut } from '../redux/actions'
 import PatientPage from '../PatientPage/PatientPage';
 import Settings from '../components/Settings/Settings';
 
 const Dashboard = () => {
-  const { currentUser } = useAuth();
+  const { currentUser } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
-  if (!currentUser) {
-    return <Redirect to="/login" />;
+  useEffect(() => {
+
+    let isMounted = true;
+    if (isMounted)
+      dispatch(fetchPatients())
+    //   clean up after unmounting
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (currentUser == null) {
+    return <Redirect to='/login' />
   }
 
   return (

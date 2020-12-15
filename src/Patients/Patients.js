@@ -1,23 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SuccessButton from '../components/Buttons/SuccessButton';
 import PatientCard from './PatientCard';
+import Loader from '../components/Loader/Loader'
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from '../Modal/Modal';
-import Loader from '../components/Loader/Loader';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Patients = () => {
-  const patients = useSelector(state => state.patients);
-  const loading = useSelector(state => state.loading);
-  const error = useSelector(state => state.error)
+  const { patients, loading, error } = useSelector(state => state.patients);
   const [isModalOpened, setModalState] = useState(false);
-  const dispatch = useDispatch();
 
   const closeModal = () => {
     setModalState(false);
   };
 
+  if (loading) {
+    return <Loader />
+  }
+
+  if (error) {
+    return <div className="notification is-danger">{error}</div>
+  }
+
   const patientsLayout = patients ? (
     <section>
+      <ToastContainer />
       <div className="wrapper-title-and-btn">
         <p
           className="subtitle is-4"
@@ -53,7 +61,8 @@ const Patients = () => {
     </section>
   ) : (
       <Loader />
-    );
+    )
+
 
   return <div>{patientsLayout}</div>;
 };

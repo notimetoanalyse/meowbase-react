@@ -1,46 +1,43 @@
 import React, { useRef, useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { updateUserCreds } from '../../redux/actions';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
 function UpdateProfile() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { currentUser, updatePassword, updateEmail } = useAuth();
+  const { currentUser } = useSelector(state => state.auth)
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError('Passwords do not match');
-    }
-
-    const promises = [];
     setLoading(true);
     setError('');
 
-    if (passwordRef.current.value) {
-      promises.push(updatePassword(passwordRef.current.value));
-    }
+    try {
+      if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+        return setError('Passwords do not match');
+      }
 
-    if (emailRef.current.value !== currentUser.email) {
-      promises.push(updateEmail(emailRef.current.value));
-    }
+      if (passwordRef.current.value) {
+        await currentUser.updatePassword(passwordRef.current.value);
+        dispatch(updateUserCreds(currentUser))
+      }
 
-    Promise.all(promises)
-      .then(() => {
-        history.push('/');
-      })
-      .catch(() => {
-        setError('Failed to update account');
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      if (emailRef.current.value !== currentUser.email) {
+        await currentUser.updateEmail(emailRef.current.value)
+        dispatch(updateUserCreds(currentUser))
+      }
+      alert('data updated!')
+    } catch (err) {
+      setError(err)
+    }
   }
+
 
   return (
     <>
@@ -103,9 +100,10 @@ function UpdateProfile() {
         </div>
       </div>
       {/* </div>
-      </section> */}
+      </section > */}
     </>
   );
 }
+
 
 export default UpdateProfile;

@@ -1,27 +1,28 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { auth } from '../firebase'
+import { logOut } from '../redux/actions';
 import logo from '../assets/logo.svg';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
 
 
 const Sidebar = () => {
-  const { logOut } = useAuth();
   const [error, setError] = useState('');
-  const className = (window.location.pathname === '/' || window.location.pathname.includes('/patient/')) ? 'is-active' : '';
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const className = (window.location.pathname === '/' || window.location.pathname.includes('/patient/')) ? 'is-active' : '';
 
   async function handleLogout() {
-    setError('');
     try {
-      await logOut();
+      await auth.signOut();
+      dispatch(logOut());
       history.push('/login');
-    } catch {
+    } catch (err) {
       setError('Failed to log out');
-      alert(error);
     }
   }
-
 
   return (
     <aside>
