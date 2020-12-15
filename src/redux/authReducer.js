@@ -1,4 +1,4 @@
-import { SIGN_IN, SIGN_OUT, RESET_PASSWORD, SHOW_LOADER, HIDE_LOADER, SET_AUTH_ERROR, UPDATE_USER_CREDS, SET_UPDATE_USER_CREDS_ERROR } from './actionTypes'
+import { SIGN_IN, SIGN_OUT, RESET_PASSWORD, SHOW_AUTH_LOADER, HIDE_AUTH_LOADER, SET_AUTH_ERROR, UPDATE_USER_CREDS, SET_CURRENT_USER, SET_UPDATE_USER_CREDS_ERROR } from './actionTypes'
 
 export const initState = {
 	currentUser: null,
@@ -7,7 +7,6 @@ export const initState = {
 };
 
 export const authReducer = (state = initState, action) => {
-	console.log(action)
 	switch (action.type) {
 		case SIGN_IN:
 			return {
@@ -23,17 +22,6 @@ export const authReducer = (state = initState, action) => {
 			return {
 				...state
 			}
-		case SHOW_LOADER:
-			return {
-				...state,
-				loading: true,
-				error: ''
-			}
-		case HIDE_LOADER:
-			return {
-				...state,
-				loading: false,
-			}
 		case SET_AUTH_ERROR:
 			return {
 				...state,
@@ -43,6 +31,21 @@ export const authReducer = (state = initState, action) => {
 			return {
 				...state,
 				currentUser: action.payload
+			}
+		case SET_CURRENT_USER:
+			return {
+				...state,
+				currentUser: action.payload
+			}
+		case SHOW_AUTH_LOADER:
+			return {
+				...state,
+				loading: true
+			}
+		case HIDE_AUTH_LOADER:
+			return {
+				...state,
+				loading: false
 			}
 		case SET_UPDATE_USER_CREDS_ERROR:
 			return {

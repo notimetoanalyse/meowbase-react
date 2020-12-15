@@ -1,54 +1,57 @@
 import React, { useRef, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Redirect, Link, useHistory } from 'react-router-dom';
 import { auth } from '../../firebase';
-import { logIn, setAuthError, logOut } from '../../redux/actions'
+import { signIn, setAuthError, logOut } from '../../redux/actions'
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
+import Loader from "../Loader/Loader";
 
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { error } = useSelector(state => state.auth)
-  const [loading, setLoading] = useState(false);
+  const { error, loading, currentUser } = useSelector(state => state.auth)
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const notify = (msg) => toast(msg)
+  if (currentUser !== null) {
+    return <Redirect to ='/'/>
+  }
+
+  if(loading) {
+    return <Loader/>
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
+
     try {
-      setAuthError('')
-      const res = await auth.signInWithEmailAndPassword(emailRef.current.value, passwordRef.current.value);
-      dispatch(logIn(res.user))
-      setTimeout(async () => {
-        try {
-          auth.signOut();
-          dispatch(logOut())
-          history.push('/login')
-        } catch (err) {
-          dispatch(setAuthError(err))
-        }
-      }, 3600000)
-      setLoading(false)
-      history.push('/')
+      dispatch(signIn(emailRef.current.value, passwordRef.current.value))
+
+      // log out user in 1 hour
+      // setTimeout(async () => {
+      //   try {
+      //     auth.signOut();
+      //     dispatch(logOut())
+      //     history.push('/login')
+      //   } catch (err) {
+      //     dispatch(setAuthError(err))
+      //   }
+      // }, 3600000)
+       history.push('/')
     } catch (err) {
-      setLoading(false)
       dispatch(setAuthError(err.toString()));
     }
-    setLoading(false);
   }
 
   return (
     <section className="hero is-white is-fullheight">
-      <ToastContainer />
       <div className="hero-body">
         <div className="container has-text-centered">
           <div className="column is-4 is-offset-4">
             <h3 className="title has-text-black">Login</h3>
-            {error && notify(error)}
             <hr className="login-hr" />
-            <p className="subtitle has-text-black">Please login to proceed.</p>
+            {error && <div className='notification is-danger'> {error} </div>}
+              <p className="subtitle has-text-black">Please login to proceed.</p>
             <div className="box">
               <form onSubmit={handleSubmit}>
                 <div className="field">

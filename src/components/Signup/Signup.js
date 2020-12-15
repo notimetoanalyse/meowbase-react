@@ -1,29 +1,38 @@
 import React, { useRef, useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useSelector,useDispatch } from 'react-redux'
+import {auth} from '../../firebase'
+import {signUp, setAuthError} from '../../redux/actions'
 import { Link, useHistory } from 'react-router-dom';
 
 const Signup = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { signUp } = useAuth();
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const {currentUser} = useSelector(state => state.auth)
   const history = useHistory();
+  const dispatch = useDispatch();
+  const {error} = useSelector(state => state.auth)
+
+  if(currentUser) {
+    history.push('/')
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError('Passwords do not match');
+      return setAuthError('Passwords do not match');
     }
+
     try {
-      setError('');
+      setAuthError('');
       setLoading(true);
-      await signUp(emailRef.current.value, passwordRef.current.value);
+      await auth.createUserWithEmailAndPassword(emailRef.current.value, passwordRef.current.value);
+      dispatch()
       history.push('/');
     } catch {
-      setError('Failed to create an account');
+      setAuthError('Failed to create an account');
     }
     setLoading(false);
   }

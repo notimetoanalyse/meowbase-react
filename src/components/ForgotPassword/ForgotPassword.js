@@ -1,26 +1,29 @@
 import React, { useRef, useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
+import { auth } from '../../firebase';
+import {resetPassword, setAuthError} from '../../redux/actions'
+import {useDispatch, useSelector} from "react-redux";
+import Loader from '../Loader/Loader'
 
 const ForgotPassword = () => {
   const emailRef = useRef();
-  const { resetPassword } = useAuth();
-  const [error, setError] = useState('');
   const [successfulReset, setSuccessfulReset] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const {currentUser, error, loading} = useSelector(state => state.auth)
+
+  if (currentUser) {
+    return <Redirect to='/'/>
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
-      setError('');
-      setLoading(true);
-      await resetPassword(emailRef.current.value);
-      setSuccessfulReset(true);
-    } catch {
-      setError('Your email is not registered');
+      dispatch(resetPassword(emailRef.current.value))
+      setSuccessfulReset(true)
+    } catch(e) {
+      dispatch(setAuthError(e));
     }
-    setLoading(false);
   }
 
   return (
@@ -30,11 +33,10 @@ const ForgotPassword = () => {
           <div className="column is-4 is-offset-4">
             <h3 className="title has-text-black">Reset Password</h3>
             {error && <div className="notification is-danger">{error}</div>}
-            {successfulReset && (
-              <div className="notification is-primary">
-                Please check your email for further instructions.{' '}
-              </div>
-            )}
+            {successfulReset &&
+              <div className="notification is-info">
+                Please check your email for further instructions.
+              </div>}
             <hr className="login-hr" />
             <p className="subtitle has-text-black">Enter your email</p>
             <div className="box">
