@@ -42,15 +42,17 @@ aside {
   width: 250px;
   min-height: 100vh;
   position: fixed;
+  display: block;
 }
 
-.sidebar {
+.sidebar, .sidebar_mobile {
   margin: 0;
   padding: 30px 20px 0 20px;
   display: flex;
   flex-direction: column;
   height: 96vh;
   flex: 1;
+  display: block;
 }
 
 .sidebar_links-wrapper {
@@ -175,7 +177,7 @@ body.modal-background {
   transition: all 0.4s ease;
 }
 
-.modal-card {
+.modal-card > {
   overflow: scroll;
 }
 
@@ -213,7 +215,7 @@ body.modal-background {
 
 .patient .patient-info {
   font-family: 'Roboto', sans-serif;
-  font-weight: semibold;
+  font-weight: 600;
   color: #4a4a4a;
   font-size: 16px;
 }
@@ -221,11 +223,13 @@ body.modal-background {
 .tag {
   margin: auto 7px;
   font-weight: 500;
+  transition: all 0.18s ease-in-out;
+  background-color: teal;
 }
 
 .tag:hover {
   opacity: 0.9;
-  box-shadow: 1px 1px 1px 1px teal;
+  box-shadow: 1px 1px 1px 1px #0aacac;
 }
 
 /* Modal Window */
@@ -393,20 +397,14 @@ progress.show::-webkit-progress-value {
   margin-bottom: 5px;
 }
 
-.tags-container tags.tagify {
+.tags-container {
   width: 100%;
-  max-width: 100%;
-  overflow-y: scroll;
-  font-family: 'Roboto', sans-serif;
-  margin: 5px auto;
-  padding: 0 2px 0 2px;
-  border: 2px solid #ccc;
+  margin: 10px auto;
+  padding: 5px;
+  border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-.tags-container {
-  width: 100%;
-}
 
 /* Patient individual page styles */
 .box {
@@ -505,6 +503,10 @@ textarea#personal-page-observations-input {
   margin: 15px auto;
 }
 
+.sidebar_mobile {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .top_panel {
     justify-content: space-between;
@@ -520,6 +522,26 @@ textarea#personal-page-observations-input {
 
   .sidebar {
     display: none;
+  }
+
+  .sidebar_mobile {
+    padding: 30px 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+    height: 96vh;
+    flex: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .aside_mobile {
+    display: block;
+    position: absolute;
+    background-color: white;
+    z-index: 1000;
+    min-height: 100vh;
+    min-width: 200px;
   }
 
   .main_section {

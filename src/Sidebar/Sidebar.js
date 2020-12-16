@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 
 
-const Sidebar = () => {
+const Sidebar = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const {loading} = useSelector(state => state.auth)
@@ -27,7 +27,7 @@ const Sidebar = () => {
   return (
     <aside>
       <nav>
-        <div className="sidebar">
+        <div className='sidebar'>
           <Link to="/">
             <div className="logo_wrapper">
               <img src={logo} alt="Meowbase" />

@@ -1,9 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Redirect, Link, useHistory } from 'react-router-dom';
 import { auth } from '../../firebase';
-import { signIn, setAuthError, logOut } from '../../redux/actions'
+import { signIn, setAuthError, signOut } from '../../redux/actions'
 import { useDispatch, useSelector } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
 import Loader from "../Loader/Loader";
 
 const Login = () => {
@@ -12,6 +11,10 @@ const Login = () => {
   const { error, loading, currentUser } = useSelector(state => state.auth)
   const history = useHistory();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => dispatch(setAuthError(''))
+  }, [])
 
   if (currentUser !== null) {
     return <Redirect to ='/'/>
@@ -28,18 +31,17 @@ const Login = () => {
       dispatch(signIn(emailRef.current.value, passwordRef.current.value))
 
       // log out user in 1 hour
-      // setTimeout(async () => {
-      //   try {
-      //     auth.signOut();
-      //     dispatch(logOut())
-      //     history.push('/login')
-      //   } catch (err) {
-      //     dispatch(setAuthError(err))
-      //   }
-      // }, 3600000)
+      setTimeout(async () => {
+        try {
+          dispatch(signOut())
+          history.push('/login')
+        } catch (err) {
+          dispatch(setAuthError(err))
+        }
+      }, 3600000)
        history.push('/')
     } catch (err) {
-      dispatch(setAuthError(err.toString()));
+      dispatch(setAuthError(err));
     }
   }
 

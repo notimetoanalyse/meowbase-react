@@ -1,25 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export default function PatientCard(props) {
+export default function PatientCard({patient}) {
+
+  const tags = patient.tags ? patient.tags.map(tag => <span className="tag is-medium"
+                                             style={{backgroundColor: 'teal', color: 'white'}}>{tag}</span>) : null
   return (
-    <Link to={`/patient/${props.patient.id}`}>
-      <div className="card is-medium" data-id={props.patient['id']}>
+    <Link to={`/patient/${patient.id}`}>
+      <div className="card is-medium">
         <div className="card-content">
-          <div className="media" data-id={props.patient.id}>
+          <div className="media" data-id={patient.id}>
             <div className="media-left">
-              <figure className="image" data-id={props.patient['id']}>
+              <figure className="image">
                 <img
                   id="patient-photo-main-page"
-                  src={props.patient.image}
-                  alt={props.patient.name}
+                  src={patient.image}
+                  alt={patient.name}
                 />
               </figure>
             </div>
           </div>
-          <div className="patient-info-container" data-id={props.patient['id']}>
-            <p className="title is-6 patient-name">{props.patient.name}</p>
-            <div className="content">{props.patient.observations}</div>
+          <div className="patient-info-container" data-id={patient.id}>
+            <p className="title is-6 patient-name">{patient.name}</p>
+            <div className="content">{patient.observations}</div>
+            <div className="content">{tags}</div>
           </div>
         </div>
       </div>

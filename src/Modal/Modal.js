@@ -1,55 +1,65 @@
-import React, { Fragment, useRef } from 'react';
-import TextInput from '../components/TextInput.js';
-import SuccessButton from '../components/Buttons/SuccessButton';
+import React, {Fragment, useRef, useState} from 'react';
 import CancelButton from '../components/Buttons/CancelButton';
+import {ToastContainer, toast} from 'react-toastify'
 import Loader from '../components/Loader/Loader'
-import { addPatient } from '../redux/actions';
+import {addPatient, setPatientsError} from '../redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
 import '.././App.css';
+import {storage} from "../firebase";
 
 const Modal = props => {
-  const error = useSelector(state => state.patients.error)
+  const {error} = useSelector(state => state.patients)
+  const [file, setFile] = useState(null);
   const dispatch = useDispatch();
   let imageRef = useRef();
   let nameRef = useRef();
   let observationsRef = useRef();
   const loading = useSelector(state => state.loading)
 
-  function handleFileSelect(e) {
-    const outputEl = document.querySelector('#patient-img-uploaded');
-    const file = e.target.files[0];
-    let reader = new FileReader();
-    reader.onload = (image => {
-      return e => {
-        outputEl.innerHTML = [
-          '<img id="uploaded-image" src = "',
-          e.target.result,
-          '" title="',
-          image.name,
-          '" width="150" />',
-        ].join('');
-      };
-    })(file);
-    reader.readAsDataURL(file);
+  //create a function that will check if name and obs have enough chars
+
+  const handleChange = (e) => {
+    setFile(e.target.files[0]);
   }
 
+  const notify = (msg) => toast(msg)
+
+
   const handleAddPatient = (e) => {
-    console.log('here')
+    let imgUrl;
     e.preventDefault();
-    const patient = {
-      name: nameRef.current.value,
-      observations: observationsRef.current.value,
-      // will need refactoring
-      // image: imageRef.current.value,
-      status: 'visible'
+
+    //handle image upload
+    const error = (err) => {
+      dispatch(setPatientsError(err.toString()))
+    };
+
+    // on successful upload
+    const complete = async () => {
+      const url = await storage.ref("images").child(file.name).getDownloadURL()
+      imgUrl = url;
+      const patient = {
+        name: nameRef.current.value,
+        observations: observationsRef.current.value,
+        image: imgUrl,
+        status: 'visible'
+      }
+      dispatch(addPatient(patient))
+      notify('Patient was added successfully')
+      setTimeout(() => {
+        props.closeModal()
+      }, 2000)
     }
-    dispatch(addPatient(patient))
+
+    const uploadTask = storage.ref(`/images/${file.name}`).put(file);
+    uploadTask.on('state_changed', null, error, complete);
   }
 
   return (
     <Fragment>
       <div>
         <div className="modal-background">
+          <ToastContainer autoClose={2000}/>
           <div className="modal-card">
             <div className="modal-card-head">
               <p className="modal-card-title">Add Patient</p>
@@ -72,10 +82,10 @@ const Modal = props => {
                       placeholder="Add Image"
                       required
                       ref={imageRef}
-                      onChange={e => handleFileSelect(e)}
+                      onChange={handleChange}
                     />
                     <span id="plus-sign">+</span>
-                    <output id="patient-img-uploaded"></output>
+                    <output id="patient-img-uploaded">{file && <img src={URL.createObjectURL(file)} alt='Patient avatar'/>}</output>
                   </div>
                   <div id="progress-container">
                     <span id="upload-photo-text">Upload progress:</span>

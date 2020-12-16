@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Sidebar from '../Sidebar/Sidebar.js';
 import Patients from '../Patients/Patients.js';
 import TopPanel from '../TopPanel/TopPanel';
@@ -14,6 +14,11 @@ const Dashboard = () => {
     const {currentUser, loading} = useSelector(state => state.auth);
     const {loadingPatients = loading} = useSelector(state => state.patients)
     const dispatch = useDispatch();
+    const [isSidebarOpened, setSidebarState] = useState(false)
+
+    const toggleSidebarState = () => {
+        setSidebarState(prevState => !prevState)
+    }
 
     useEffect(() => {
             let isMounted = true;
@@ -37,9 +42,9 @@ const Dashboard = () => {
         <>
             <div className="page_container">
                 <div className="main_content_flex_wrapper">
-                    <Sidebar/>
+                    <Sidebar mobileOpened={isSidebarOpened}/>
                     <div className="non_sidebar_content">
-                        <TopPanel/>
+                        <TopPanel burgerHandler={toggleSidebarState}/>
                         <div class="main_section" id="main-section">
                             <Switch>
                                 <Route exact path="/" component={Patients}/>

@@ -75,6 +75,19 @@ export const signIn = (email, pass) => {
 	}
 }
 
+export const signUp = (email, pass) => {
+	return async dispatch => {
+		try {
+			dispatch(showAuthLoader())
+			await auth.createUserWithEmailAndPassword(email, pass)
+			dispatch(hideAuthLoader())
+		} catch(err) {
+			dispatch(hideAuthLoader())
+			setAuthError(err.toString())
+		}
+	}
+}
+
 export const resetPassword = (email) => {
 	return async dispatch => {
 		try {
@@ -122,7 +135,7 @@ export const updatePatient = (id, patient) => {
 			dispatch(hidePatientsLoader())
 		} catch (err) {
 			dispatch(hidePatientsLoader())
-			dispatch(setPatientsError(err))
+			dispatch(setPatientsError(err.toString()))
 		}
 	}
 }
@@ -138,7 +151,7 @@ export const deletePatient = (id) => {
 			dispatch(hidePatientsLoader())
 		} catch (err) {
 			dispatch(hidePatientsLoader())
-			dispatch(setPatientsError(err))
+			dispatch(setPatientsError(err.toString()))
 		}
 	}
 }
@@ -154,6 +167,7 @@ export const fetchPatients = () => {
 			);
 			const filteredPatients = allPatients.filter(patient => patient !== null);
 			dispatch({ type: SET_PATIENTS, payload: filteredPatients });
+			console.log(filteredPatients)
 			dispatch(hidePatientsLoader())
 		} catch (err) {
 			dispatch(hidePatientsLoader())
@@ -176,8 +190,3 @@ export const addPatient = (patient) => {
 		}
 	}
 }
-
-// // add to useEffect
-// db.collection('patients').onSnapshot(function () {
-// 	fetchPatients();
-// });

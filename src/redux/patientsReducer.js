@@ -25,7 +25,7 @@ export const patientsReducer = (state = initState, action) => {
 		case ADD_PATIENT:
 			return {
 				...state,
-				patient: [action.payload, ...state.patients]
+				patients: [action.payload, ...state.patients]
 			}
 		case SET_PATIENTS_ERROR:
 			return { ...state, error: action.payload }

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useSelector,useDispatch } from 'react-redux'
 import {auth} from '../../firebase'
 import {signUp, setAuthError} from '../../redux/actions'
@@ -14,23 +14,26 @@ const Signup = () => {
   const dispatch = useDispatch();
   const {error} = useSelector(state => state.auth)
 
+  useEffect(() => {
+    return() => dispatch(setAuthError(''))
+  })
+
   if(currentUser) {
-    history.push('/')
+    history.push('/login')
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setAuthError('Passwords do not match');
+       dispatch(setAuthError('Passwords do not match'))
+      return;
     }
 
     try {
       setAuthError('');
-      setLoading(true);
-      await auth.createUserWithEmailAndPassword(emailRef.current.value, passwordRef.current.value);
-      dispatch()
-      history.push('/');
+      dispatch(signUp(emailRef.current.value, passwordRef.current.value))
+      history.push('/login');
     } catch {
       setAuthError('Failed to create an account');
     }
@@ -85,7 +88,7 @@ const Signup = () => {
                 </div>
 
                 <button
-                  class="button is-block is-success is-medium is-fullwidth"
+                  class="button is-block is-primary is-medium is-fullwidth"
                   type="submit"
                   disabled={loading}
                 >
