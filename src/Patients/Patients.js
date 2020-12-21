@@ -25,7 +25,6 @@ const Patients = () => {
 
   const patientsLayout = patients ? (
     <section>
-      <ToastContainer />
       <div className="wrapper-title-and-btn">
         <p
           className="subtitle is-4"

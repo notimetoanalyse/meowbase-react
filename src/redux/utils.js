@@ -16,10 +16,10 @@ export function parsePatientFromSnapshot(snapshot) {
 		return null;
 	}
 
-	// if (!Array.isArray(json['tags'])) {
-	// 	console.info(`Invalid tags on patient ${snapshot.id}`);
-	// 	return null;
-	// }
+	if (!Array.isArray(json['tags'])) {
+		console.info(`Invalid tags on patient ${snapshot.id}`);
+		return null;
+	}
 
 	if (json['status'] == 'invisible') {
 		return null;

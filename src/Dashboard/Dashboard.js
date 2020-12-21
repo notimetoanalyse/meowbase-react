@@ -5,7 +5,6 @@ import TopPanel from '../TopPanel/TopPanel';
 import Loader from '../components/Loader/Loader'
 import {Route, Switch, Redirect} from 'react-router';
 import {useDispatch, useSelector} from 'react-redux';
-import '../App.css';
 import {fetchPatients} from '../redux/actions'
 import PatientPage from '../PatientPage/PatientPage';
 import Settings from '../components/Settings/Settings';

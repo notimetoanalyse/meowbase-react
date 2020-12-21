@@ -16,7 +16,7 @@ const Signup = () => {
 
   useEffect(() => {
     return() => dispatch(setAuthError(''))
-  })
+  }, [])
 
   if(currentUser) {
     history.push('/login')

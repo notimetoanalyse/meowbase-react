@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function PatientCard({patient}) {
 
-  const tags = patient.tags ? patient.tags.map(tag => <span className="tag is-medium"
+  const tags = patient.tags ? patient.tags.map(tag => <span className="tag-in-card is-medium"
                                              style={{backgroundColor: 'teal', color: 'white'}}>{tag}</span>) : null
   return (
     <Link to={`/patient/${patient.id}`}>

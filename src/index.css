@@ -40,7 +40,7 @@ aside {
   box-sizing: border-box;
   border-right: 1px solid #979797;
   width: 250px;
-  min-height: 100vh;
+  height: 100vh;
   position: fixed;
   display: block;
 }
@@ -56,7 +56,8 @@ aside {
 }
 
 .sidebar_links-wrapper {
-  height: 100%;
+  height: 90%;
+  width: 100%;
 }
 
 body.modal-background {
@@ -220,14 +221,16 @@ body.modal-background {
   font-size: 16px;
 }
 
-.tag {
-  margin: auto 7px;
+.tag-in-card {
+  padding: 7px 12px;
+  border-radius: 8px;
+  margin-right: 10px;
   font-weight: 500;
   transition: all 0.18s ease-in-out;
   background-color: teal;
 }
 
-.tag:hover {
+.tag-in-card:hover {
   opacity: 0.9;
   box-shadow: 1px 1px 1px 1px #0aacac;
 }
@@ -397,14 +400,73 @@ progress.show::-webkit-progress-value {
   margin-bottom: 5px;
 }
 
-.tags-container {
+/*.tags-container {*/
+/*  width: 100%;*/
+/*  margin: 10px auto;*/
+/*  padding: 5px;*/
+/*  border: 1px solid #ccc;*/
+/*  border-radius: 5px;*/
+/*}*/
+
+.tags-input {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 48px;
   width: 100%;
-  margin: 10px auto;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 5px 8px;
+  margin: 0;
+  border: 1px solid rgb(214, 216, 218);
+  border-radius: 6px;
 }
 
+.tags-input:focus-within {
+   border: 1px solid #0052cc;
+ }
+
+#tags-input-el {
+  flex: 1;
+  border: none;
+  height: 46px;
+  font-size: 14px;
+  padding: 4px 0 0 4px;
+}
+
+#tags-input-el:focus {
+   outline: transparent;
+ }
+
+#tags {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  gap: 5px;
+}
+
+
+.tag-title {
+  margin-top: 3px;
+}
+
+.tag-close-icon {
+  display: flex;
+  justify-content: center;
+  width: 13px;
+  line-height: 16px;
+  text-align: center;
+  font-size: 15px;
+  margin-left: 8px;
+  color: black;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 567px) {
+  .tags-input {
+    width: calc(100vw - 32px);
+  }
+}
 
 /* Patient individual page styles */
 .box {
@@ -485,6 +547,7 @@ textarea#personal-page-observations-input {
   width: 100%;
   max-width: 100%;
   overflow: auto;
+  margin-bottom: 15px;
 }
 
 textarea#personal-page-observations-input::placeholder {
@@ -505,6 +568,44 @@ textarea#personal-page-observations-input {
 
 .sidebar_mobile {
   display: none;
+}
+
+/*loader*/
+
+.loader-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.loader {
+  display: inline-block;
+  width: 130px;
+  height: 130px;
+}
+
+.loader:after {
+  content: " ";
+  display: block;
+  width: 120px;
+  height: 120px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 8px solid var(--green-color);
+  border-color: var(--green-color) transparent var(--green-color) transparent;
+  animation: loader 1.2s linear infinite;
+}
+
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 768px) {

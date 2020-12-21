@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import { Route, Switch } from 'react-router';
-import './App.css';
+import {Route, Switch} from 'react-router';
+import {ToastContainer} from 'react-toastify'
 import {auth} from './firebase';
 import {setCurrentUser, showAuthLoader, hideAuthLoader} from './redux/actions'
 import Login from './components/Login/Login';
@@ -24,18 +24,17 @@ function App() {
         return unsubscribe;
     }, [])
 
-    // if(loading && !currentUser) {
-    //   return <Loader/>
-    // }
-
-  return (
-    <Switch>
-      <Route path="/login" component={Login} />
-      <Route path="/signup" component={Signup} />
-      <Route path="/forgot-password" component={ForgotPassword} />
-      <Route path="/" component={Dashboard} />
-    </Switch>
-  );
+    return (
+        <>
+            <ToastContainer/>
+            <Switch>
+                <Route path="/login" component={Login}/>
+                <Route path="/signup" component={Signup}/>
+                <Route path="/forgot-password" component={ForgotPassword}/>
+                <Route path="/" component={Dashboard}/>
+            </Switch>
+        </>
+    );
 }
 
 export default App;

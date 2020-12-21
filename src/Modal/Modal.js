@@ -1,10 +1,10 @@
 import React, {Fragment, useRef, useState} from 'react';
 import CancelButton from '../components/Buttons/CancelButton';
+import TagsInput from '../components/TagsInput/TagsInput'
 import {ToastContainer, toast} from 'react-toastify'
 import Loader from '../components/Loader/Loader'
 import {addPatient, setPatientsError} from '../redux/actions';
 import { useSelector, useDispatch } from 'react-redux';
-import '.././App.css';
 import {storage} from "../firebase";
 
 const Modal = props => {
@@ -15,15 +15,23 @@ const Modal = props => {
   let nameRef = useRef();
   let observationsRef = useRef();
   const loading = useSelector(state => state.loading)
-
+  const [tags, setTags] = useState([]);
   //create a function that will check if name and obs have enough chars
+
+  //need to move that
+  const removeTags = indexToRemove => {
+    setTags([...tags.filter((_, index) => index !== indexToRemove)]);
+  };
+
+  const handleSetTags = (tags) => {
+    setTags(tags);
+  }
 
   const handleChange = (e) => {
     setFile(e.target.files[0]);
   }
 
   const notify = (msg) => toast(msg)
-
 
   const handleAddPatient = (e) => {
     let imgUrl;
@@ -42,6 +50,7 @@ const Modal = props => {
         name: nameRef.current.value,
         observations: observationsRef.current.value,
         image: imgUrl,
+        tags: tags,
         status: 'visible'
       }
       dispatch(addPatient(patient))
@@ -70,7 +79,14 @@ const Modal = props => {
                 onClick={props.closeModal}
               ></button>
             </div>
-            <form onSubmit={(e) => handleAddPatient(e)}>
+            <form    onKeyPress={e => {
+              if(e.key === 'Enter') {
+                e.preventDefault()
+              }
+            }}
+                     onSubmit={(e) => handleAddPatient(e)}
+
+            >
               <div className="modal-card-body">
                 {error.length > 0 && <div className='notification is-danger'>{error}</div>}
                 {loading && <Loader />}
@@ -129,6 +145,7 @@ const Modal = props => {
                   <div id="empty-msg-observations" className="empty-input">
                     Observations field can't be empty or less than 2 characters
                   </div>
+                  <TagsInput removeTags={removeTags} handleSetTags={handleSetTags}tags={tags}/>
                 </div>
               </div>
               <div className="modal-card-foot">

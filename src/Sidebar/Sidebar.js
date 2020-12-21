@@ -58,7 +58,7 @@ const Sidebar = (props) => {
               </li>
             </ul>
           </div>
-          <button className="button is-warning is-light" onClick={handleLogout}>Log Out</button>
+          <button className="button is-warning is-light is-fullwidth" onClick={handleLogout}>Log Out</button>
         </div>
       </nav>
     </aside>

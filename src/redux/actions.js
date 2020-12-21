@@ -181,9 +181,10 @@ export const addPatient = (patient) => {
 		try {
 			dispatch(showPatientsLoader());
 			dispatch(showPatientsLoader());
-			await db.collection('patients').add(patient);
-			dispatch(hidePatientsLoader())
-			dispatch({ type: ADD_PATIENT, payload: patient })
+			const res = await db.collection('patients').add(patient)
+			const id = {id: res.id};
+			dispatch(hidePatientsLoader());
+			dispatch({ type: ADD_PATIENT, payload: {patient, ...id}})
 		} catch (err) {
 			dispatch(hidePatientsLoader())
 			dispatch(setPatientsError(err.toString()))

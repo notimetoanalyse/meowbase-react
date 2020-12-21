@@ -53,7 +53,7 @@ const Login = () => {
             <h3 className="title has-text-black">Login</h3>
             <hr className="login-hr" />
             {error && <div className='notification is-danger'> {error} </div>}
-              <p className="subtitle has-text-black">Please login to proceed.</p>
+              <p className="subtitle has-text-black">Please log in to proceed.</p>
             <div className="box">
               <form onSubmit={handleSubmit}>
                 <div className="field">
